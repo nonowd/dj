@@ -1,6 +1,7 @@
 from django.http import HttpResponse, Http404
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from datetime import datetime
+from blog.models import Article
 
 def home(request):
     """ Exemple de page HTML, non valide pour que l'exemple soit concis """
@@ -38,4 +39,13 @@ def date_actuelle(request):
 def addition(request, nombre1, nombre2):
 	total = int(nombre1) + int(nombre2)
 	return render(request, 'blog/addition.html', locals())
+
+def accueil(request):
+	articles = Article.objects.all()
+	return render(request, 'blog/accueil.html', {'derniers_articles' : articles})
+
+def lire(request, id):
+	article = get_object_or_404(Article, id=id)
+	return render(request, 'blog/lire.html', {'article': article})
+ 	
 
